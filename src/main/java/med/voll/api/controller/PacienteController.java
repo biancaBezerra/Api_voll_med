@@ -24,18 +24,18 @@ public class PacienteController {
     private PacienteRepository repository;
     @PostMapping
     @Transactional
+    //Devolve método HTTP mais apropriado - COD 201
     public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroPaciente dados, UriComponentsBuilder uriBuilder){
 
         var paciente = new Paciente(dados);
-
         repository.save(paciente);
-
         var uri = uriBuilder.path("/pacientes/{id}").buildAndExpand(paciente.getId()).toUri();
 
         return ResponseEntity.created(uri).body(new DadosDetalhamentoPaciente(paciente));
     }
 
     @GetMapping
+    //Devolve método HTTP mais apropriado - COD 200
     public ResponseEntity<Page<DadosListagemPaciente>> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao){
         var page = repository.findAllByAtivoTrue(paginacao).map(DadosListagemPaciente::new);
 
@@ -44,6 +44,7 @@ public class PacienteController {
 
     @PutMapping
     @Transactional
+    //Devolve método HTTP mais apropriado - COD 200
     public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizacaoPaciente dados){
         var paciente = repository.getReferenceById(dados.id());
         paciente.atualizarInformacoes(dados);
@@ -53,6 +54,7 @@ public class PacienteController {
 
     @DeleteMapping("/{id}")
     @Transactional
+    //Devolve método HTTP mais apropriado - COD 204
     public ResponseEntity excluir(@PathVariable Long id){
         var paciente = repository.getReferenceById(id);
         paciente.excluir();
@@ -60,6 +62,7 @@ public class PacienteController {
     }
 
     @GetMapping("/{id}")
+    //Devolve método HTTP mais apropriado - COD 200
     public ResponseEntity detalhar(@PathVariable Long id){
         var paciente = repository.getReferenceById(id);
 

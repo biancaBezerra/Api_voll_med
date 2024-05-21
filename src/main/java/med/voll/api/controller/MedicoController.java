@@ -20,6 +20,7 @@ public class MedicoController {
 
     @PostMapping
     @Transactional
+    //Devolve método HTTP mais apropriado - COD 201
     public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroMedico dados, UriComponentsBuilder uriBuilder){
         var medico = new Medico(dados);
 
@@ -31,6 +32,7 @@ public class MedicoController {
     }
 
     @GetMapping
+    //Devolve método HTTP mais apropriado - COD 200
     public ResponseEntity<Page<DadosListagemMedico>> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao){
         var page =  repository.findAllByAtivoTrue(paginacao).map(DadosListagemMedico::new);
         return ResponseEntity.ok(page);
@@ -38,6 +40,7 @@ public class MedicoController {
 
     @PutMapping
     @Transactional
+    //Devolve método HTTP mais apropriado - COD 200
     public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizacaoMedico dados){
         var medico = repository.getReferenceById(dados.id());
         medico.atualizarInformacoes(dados);
@@ -47,6 +50,7 @@ public class MedicoController {
 
     @DeleteMapping("/{id}")
     @Transactional
+    //Devolve método HTTP mais apropriado - COD 204
     public ResponseEntity excluir(@PathVariable Long id){
         var medico = repository.getReferenceById(id);
         medico.excluir();
@@ -55,6 +59,7 @@ public class MedicoController {
     }
 
     @GetMapping("/{id}")
+    //Devolve método HTTP mais apropriado - COD 200
     public ResponseEntity detalhar(@PathVariable Long id){
         var medico = repository.getReferenceById(id);
 
